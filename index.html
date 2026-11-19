@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kala Kriti | Artist Portfolio & Gallery</title>
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ==========================================
+       1. TOP NAVIGATION BAR
+       ========================================== -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <span class="brand-symbol">🎨</span>
+        <span class="brand-title">Kala Kriti</span>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#gallery-section" class="nav-link active">Gallery</a>
+        <a href="#about-section" class="nav-link">About Artist</a>
+        <!-- Dynamic Login / Logout button -->
+        <button id="authBtn" class="btn-primary" onclick="toggleAuthModal()">
+          🔑 Artist Login
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       2. ARTIST INTRBANNER
+       ========================================== -->
+  <section class="hero-banner">
+    <div class="hero-container">
+      <div class="hero-avatar">
+        <!-- Profile Picture Placeholder -->
+        <img src="Kalakriti.jpeg" alt="Kala Kriti Artist Portrait" class="avatar-img">
+      </div>
+      <div class="hero-bio">
+        <span class="badge hero-badge">Bringing Art to the Screen</span>
+        <h1>Kala Kriti</h1>
+        <p class="tagline">From blank code to digital canvas!!</p>
+        <p class="bio-text">
+          Welcome to the world of  digital gallery!
+        </p>
+        <div class="hero-contact-bar">
+          <span class="contact-pill">India</span>
+          <span class="contact-pill">✉️ kalakriti@studio.com</span>
+          <span class="contact-pill">📸 @kalakriti.studio</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       3. ARTIST DASHBOARD
+       ========================================== -->
+  <section id="adminDashboard" class="admin-dashboard hidden">
+    <div class="admin-container">
+      <div class="admin-header">
+        <div>
+          <h2>🛠️ Artist Management Studio</h2>
+          <p class="admin-subtitle">Logged in as <strong>Admin</strong>. Changes are saved automatically to your browser's <code>localStorage</code>.</p>
+        </div>
+        <button class="btn-secondary" onclick="handleLogout()">🚪 Logout</button>
+      </div>
+
+      <!-- Add New Artwork Form -->
+      <div class="admin-card">
+        <h3>➕ Add New Artwork</h3>
+        <form id="addArtworkForm" onsubmit="handleAddNewArtwork(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="artTitle">Artwork Title *</label>
+              <input type="text" id="artTitle" placeholder="e.g., Whispering Forest" required>
+            </div>
+            <div class="form-group">
+              <label for="artCategory">Category *</label>
+              <select id="artCategory" required>
+                <option value="Painting">Painting</option>
+                <option value="Digital Art">Digital Art</option>
+                <option value="Photography">Photography</option>
+                <option value="Sketch">Sketch</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="artYear">Creation Year *</label>
+              <input type="number" id="artYear" min="2000" max="2030" value="2024" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="artMedium">Medium / Materials *</label>
+              <input type="text" id="artMedium" placeholder="e.g., Oil on Linen / iPad Procreate" required>
+            </div>
+            <div class="form-group flex-2">
+              <label for="artImage">Image URL *</label>
+              <input type="url" id="artImage" placeholder="https://images.unsplash.com/..." required>
+            </div>
+          </div>
+
+          <!-- Quick Sample Images helper for testing -->
+          <div class="sample-images-helper">
+            <span class="helper-label">Quick sample images for testing:</span>
+            <button type="button" class="btn-chip" onclick="fillSampleImage('https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80')">Painting</button>
+            <button type="button" class="btn-chip" onclick="fillSampleImage('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80')">Digital Abstract</button>
+            <button type="button" class="btn-chip" onclick="fillSampleImage('https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80')">Sketch</button>
+            <button type="button" class="btn-chip" onclick="fillSampleImage('https://images.unsplash.com/photo-1493863641943-9b68992a8d07?auto=format&fit=crop&w=800&q=80')">Photography</button>
+          </div>
+
+          <div class="form-group">
+            <label for="artDescription">Artwork Story / Description *</label>
+            <textarea id="artDescription" rows="3" placeholder="Describe the concept, mood, or inspiration behind this artwork..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary btn-submit">✨ Publish to Portfolio</button>
+        </form>
+      </div>
+
+      <!-- Manage Existing Artworks Table -->
+      <div class="admin-card">
+        <h3>📋 Manage Existing Artworks (<span id="adminTotalCount">0</span>)</h3>
+        <div class="table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Preview</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Year</th>
+                <th>Likes</th>
+                <th>Comments</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody">
+              <!-- Injected dynamically via script.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       4. SEARCH & FILTER CONTROLS
+       ========================================== -->
+  <main class="main-content" id="gallery-section">
+    <div class="gallery-controls-card">
+      <div class="controls-header">
+        <div>
+          <h2>🎨 Artwork Gallery</h2>
+          <p class="controls-subtitle">Explore selected works across various artistic disciplines.</p>
+        </div>
+        <div class="stats-counter" id="galleryCount">Showing all works</div>
+      </div>
+
+      <div class="controls-bar">
+        <!-- Search input box -->
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search artwork by title..." 
+            oninput="handleSearchInput(event)"
+          >
+          <button id="clearSearchBtn" class="btn-clear hidden" onclick="clearSearch()">✕</button>
+        </div>
+
+        <!-- Category filter buttons -->
+        <div class="filter-buttons" id="categoryFilterGroup">
+          <button class="filter-btn active" data-category="All" onclick="handleCategoryFilter('All')">All</button>
+          <button class="filter-btn" data-category="Painting" onclick="handleCategoryFilter('Painting')">Painting</button>
+          <button class="filter-btn" data-category="Digital Art" onclick="handleCategoryFilter('Digital Art')">Digital Art</button>
+          <button class="filter-btn" data-category="Photography" onclick="handleCategoryFilter('Photography')">Photography</button>
+          <button class="filter-btn" data-category="Sketch" onclick="handleCategoryFilter('Sketch')">Sketch</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         5. ARTWORK GALLERY GRID
+         ========================================== -->
+    <div id="galleryGrid" class="gallery-grid">
+      <!-- Artwork cards are created dynamically in script.js -->
+    </div>
+
+    <!-- Empty state message if search finds nothing -->
+    <div id="emptyState" class="empty-state hidden">
+      <div class="empty-icon">🖼️</div>
+      <h3>No artworks match your search</h3>
+      <p>Try searching for a different keyword or switch the category filter to "All".</p>
+      <button class="btn-secondary" onclick="resetFilters()">Reset Search & Filters</button>
+    </div>
+  </main>
+  <section class="about-section" id="about-section">
+
+      <div class="about-card">
+        <h3>Get in Touch</h3>
+                <div class="contact-details">
+          <p><strong>Studio:</strong> Phagwara (273013) Punjab, India</p>
+          <p><strong>Email:</strong> kalakriti.art@gmail.com</p>
+          <p><strong>Developer:</strong> Paramjit Singh, Vishal Nishad, Khwaish Kumar</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       7. FOOTER
+       ========================================== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p><strong>Online Portfolio for Artists & Creatives</strong> •Thank you for visiting!</p>
+    </div>
+  </footer>
+
+  <!-- ==========================================
+       8. MODAL: ARTWORK DETAILS & COMMENTS
+       ========================================== -->
+  <div id="detailsModal" class="modal-backdrop hidden" onclick="handleBackdropClick(event, 'detailsModal')">
+    <div class="modal-content modal-large">
+      <button class="modal-close-btn" onclick="closeModal('detailsModal')" title="Close">&times;</button>
+      
+      <div class="modal-body-details">
+        <!-- Left: Large Image -->
+        <div class="modal-image-col">
+          <img id="modalArtImage" src="" alt="Artwork enlarged view">
+        </div>
+
+        <!-- Right: Information & Comments -->
+        <div class="modal-info-col">
+          <div class="modal-header-meta">
+            <span id="modalArtCategory" class="badge">Category</span>
+            <span id="modalArtYear" class="meta-year">2024</span>
+          </div>
+
+          <h2 id="modalArtTitle" class="modal-title">Artwork Title</h2>
+          <p class="modal-medium"><strong>Medium:</strong> <span id="modalArtMedium">Oil on Canvas</span></p>
+          <p id="modalArtDescription" class="modal-description">Artwork description goes here.</p>
+
+          <!-- Modal Like Button -->
+          <div class="modal-like-bar">
+            <button id="modalLikeBtn" class="btn-like" onclick="handleLikeFromModal()">
+              <span class="heart-icon">❤️</span> Like (<span id="modalLikeCount">0</span>)
+            </button>
+            <span class="like-hint">Clicking saves your like in localStorage</span>
+          </div>
+
+          <hr class="modal-divider">
+
+          <!-- Visitor Comments Section -->
+          <div class="comments-section">
+            <h3>💬 Visitor Comments (<span id="modalCommentsCount">0</span>)</h3>
+            
+            <!-- List of existing comments -->
+            <div id="modalCommentsList" class="comments-list">
+              <!-- Dynamically populated via script.js -->
+            </div>
+
+            <!-- Form to add a new comment -->
+            <form id="commentForm" class="comment-form" onsubmit="handlePostComment(event)">
+              <h4>Leave a Comment</h4>
+              <div class="form-group">
+                <input type="text" id="commentAuthor" placeholder="Your Name (e.g. Maya Lin)" required>
+              </div>
+              <div class="form-group">
+                <textarea id="commentText" rows="2" placeholder="Write your thoughts on this artwork..." required></textarea>
+              </div>
+              <button type="submit" class="btn-primary btn-sm">Post Comment</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="loginModal" class="modal-backdrop hidden" onclick="handleBackdropClick(event, 'loginModal')">
+    <div class="modal-content modal-small">
+      <button class="modal-close-btn" onclick="closeModal('loginModal')" title="Close">&times;</button>
+      <div class="modal-header">
+        <h3>🔐 Artist / Admin Login</h3>
+        <p class="login-note">
+          College Project Demo Credentials:<br>
+          <strong>Username:</strong> <code>admin</code> &nbsp;|&nbsp; <strong>Password:</strong> <code>1234</code>
+        </p>
+      </div>
+
+      <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+        <div class="form-group">
+          <label for="loginUsername">Username</label>
+          <input type="text" id="loginUsername" placeholder="Enter 'admin'" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="Enter '1234'" required autocomplete="current-password">
+        </div>
+
+        <div id="loginError" class="login-error hidden">Invalid username or password! Please try again.</div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" onclick="closeModal('loginModal')">Cancel</button>
+          <button type="submit" class="btn-primary">Sign In</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       10. MODAL: EDIT ARTWORK DETAILS
+       ========================================== -->
+  <div id="editModal" class="modal-backdrop hidden" onclick="handleBackdropClick(event, 'editModal')">
+    <div class="modal-content modal-medium">
+      <button class="modal-close-btn" onclick="closeModal('editModal')" title="Close">&times;</button>
+      <div class="modal-header">
+        <h3>✏️ Edit Artwork Details</h3>
+        <p class="controls-subtitle">Update any of the fields below and save.</p>
+      </div>
+
+      <form id="editArtworkForm" onsubmit="handleSaveEditArtwork(event)">
+        <!-- Hidden input to track ID of artwork being edited -->
+        <input type="hidden" id="editArtId">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="editArtTitle">Artwork Title *</label>
+            <input type="text" id="editArtTitle" required>
+          </div>
+          <div class="form-group">
+            <label for="editArtCategory">Category *</label>
+            <select id="editArtCategory" required>
+              <option value="Painting">Painting</option>
+              <option value="Digital Art">Digital Art</option>
+              <option value="Photography">Photography</option>
+              <option value="Sketch">Sketch</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editArtYear">Creation Year *</label>
+            <input type="number" id="editArtYear" min="2000" max="2030" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="editArtMedium">Medium *</label>
+            <input type="text" id="editArtMedium" required>
+          </div>
+          <div class="form-group flex-2">
+            <label for="editArtImage">Image URL *</label>
+            <input type="url" id="editArtImage" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="editArtDescription">Description *</label>
+          <textarea id="editArtDescription" rows="3" required></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" onclick="closeModal('editModal')">Cancel</button>
+          <button type="submit" class="btn-primary">💾 Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Link to external JavaScript file -->
+  <script src="script.js"></script>
+</body>
+</html>
