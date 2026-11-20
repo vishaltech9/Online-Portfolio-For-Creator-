@@ -75,11 +75,11 @@
           <div class="form-row">
             <div class="form-group">
               <label for="artTitle">Artwork Title *</label>
-              <input type="text" id="artTitle" placeholder="e.g., Whispering Forest" required>
+              <input type="text" id="artTitle" placeholder="e.g., Whispering Forest,College Life">
             </div>
             <div class="form-group">
               <label for="artCategory">Category *</label>
-              <select id="artCategory" required>
+              <select id="artCategory">
                 <option value="Painting">Painting</option>
                 <option value="Digital Art">Digital Art</option>
                 <option value="Photography">Photography</option>
@@ -88,14 +88,14 @@
             </div>
             <div class="form-group">
               <label for="artYear">Creation Year *</label>
-              <input type="number" id="artYear" min="2000" max="2030" value="2024" required>
+              <input type="number" id="artYear" min="2000" max="2999" value="2026" required>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label for="artMedium">Medium / Materials *</label>
-              <input type="text" id="artMedium" placeholder="e.g., Oil on Linen / iPad Procreate" required>
+              <input type="text" id="artMedium" placeholder="e.g., Oil on Linen / iPad Procreate">
             </div>
             <div class="form-group flex-2">
               <label for="artImage">Image URL *</label>
@@ -106,10 +106,11 @@
           <!-- Quick Sample Images helper for testing -->
           <div class="sample-images-helper">
             <span class="helper-label">Quick sample images for testing:</span>
-            <button type="button" class="btn-chip" onclick="fillSampleImage('https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80')">Painting</button>
-            <button type="button" class="btn-chip" onclick="fillSampleImage('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80')">Digital Abstract</button>
-            <button type="button" class="btn-chip" onclick="fillSampleImage('https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80')">Sketch</button>
-            <button type="button" class="btn-chip" onclick="fillSampleImage('https://images.unsplash.com/photo-1493863641943-9b68992a8d07?auto=format&fit=crop&w=800&q=80')">Photography</button>
+            <button type="button" class="btn-chip" onclick="fillSampleImage('https://i.pinimg.com/474x/84/f8/30/84f830a214fac4b5787b1729baf8a917.jpg')">Photography</button>
+            <button type="button" class="btn-chip" onclick="fillSampleImage('https://i.pinimg.com/474x/f4/8f/01/f48f019a02893ab116a742e437e09d66.jpg')">Digital Abstract</button>
+            <button type="button" class="btn-chip" onclick="fillSampleImage('https://i.pinimg.com/474x/7c/39/2f/7c392f1e9678e3e2ff084c6cad3630aa.jpg')">Sketch</button>
+            <button type="button" class="btn-chip" onclick="fillSampleImage('https://i.pinimg.com/474x/24/26/03/242603a3da3cd1acef114de1986e2061.jpg')">Photography</button>
+            <button type="button" class="btn-chip" onclick="fillSampleImage('https://i.pinimg.com/474x/5b/80/4d/5b804dc5d52f6d7b28c7d5ef8406ad3a.jpg')">Painting</button>
           </div>
 
           <div class="form-group">
